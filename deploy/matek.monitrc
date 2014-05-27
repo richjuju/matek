@@ -1,0 +1,10 @@
+#!monit
+set logfile /var/log/matek_monit.log
+
+check process nodejs with pidfile "/var/run/matek.pid"
+    start program = "/sbin/start matek"
+    stop program  = "/sbin/stop matek"
+    if failed port 3000 protocol HTTP
+        request /
+        with timeout 10 seconds
+        then restart
